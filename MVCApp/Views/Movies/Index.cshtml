@@ -1,0 +1,13 @@
+﻿@model IEnumerable<MVCApp.Models.Movie>
+@{
+    ViewBag.Title = "Movies";
+}
+
+<h2>@ViewBag.Title</h2>
+<ul>
+    @foreach (var movie in Model)
+    {
+    <li><h2>@Html.ActionLink(movie.Name, "Details", "Movies",new { id = movie.Id},null)</h2></li>   
+
+    }
+</ul>

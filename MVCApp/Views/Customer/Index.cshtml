@@ -1,0 +1,34 @@
+﻿@model IEnumerable<MVCApp.Models.Customer>
+@{
+    ViewBag.Title = "Customers";
+}
+
+<h2>@ViewBag.Title</h2>
+@if (!Model.Any()) {
+    <p>There is no Customer found !!!</p>
+}
+else
+{
+<table class=" table table-bordered table-hover">
+    <thead>
+        <tr>
+            <td><h5>Customers</h5></td>
+            <td><h5>Discount Rate</h5></td>
+            <td><h5>Name</h5></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(customer.Name,"Edit","Customer",new {id=customer.Id },null)
+                </td>
+                <td>@customer.MemberShipType.DiscountRate%</td>
+                <td>@customer.MemberShipType.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+

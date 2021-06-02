@@ -24,18 +24,18 @@ namespace MVCApp.Controllers.api
         }
 
         //Route GET api/movies/id
-        public MovieDto GetMovie(int id)
+        public IHttpActionResult GetMovie(int id)
         {
             var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
             if (movie == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            return Mapper.Map<Movie,MovieDto>(movie);
+            return Ok(Mapper.Map<Movie,MovieDto>(movie));
         }
 
         //Route POST api/movies
         [HttpPost]
-        public MovieDto AddMovie(MovieDto movieDto)
+        public IHttpActionResult AddMovie(MovieDto movieDto)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
@@ -43,12 +43,12 @@ namespace MVCApp.Controllers.api
             _context.Movies.Add(movie);
             _context.SaveChanges();
             movieDto.Id = movie.Id;
-            return movieDto;
+            return Created(new Uri(Request.RequestUri + "/" + movie.Id), movieDto);
         }
 
         //Route Put api/movies/id
         [HttpPut]
-        public void UpdateMovie(int id, MovieDto movieDto) {
+        public IHttpActionResult UpdateMovie(int id, MovieDto movieDto) {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             var movieIndDb = _context.Movies.SingleOrDefault(m => m.Id == id);
@@ -56,16 +56,17 @@ namespace MVCApp.Controllers.api
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             Mapper.Map(movieDto,movieIndDb);
             _context.SaveChanges();
-
+            return Ok();
         }
 
-        public void DeleteMovie(int id)
+        public IHttpActionResult DeleteMovie(int id)
         {
             var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
             if (movie == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             _context.Movies.Remove(movie);
             _context.SaveChanges();
+            return Ok();
         }
     }
 }

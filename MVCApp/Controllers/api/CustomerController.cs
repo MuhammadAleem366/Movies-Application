@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using MVCApp.Models;
+using System.Data.Entity;
 using AutoMapper;
 using MVCApp.Dtos;
 namespace MVCApp.Controllers.api
@@ -21,7 +22,10 @@ namespace MVCApp.Controllers.api
         public IEnumerable<CustomerDto> GetCustomers()
         {
 
-            return _context.Customers.ToList().Select(Mapper.Map<Customer,CustomerDto>);
+            return _context.Customers.
+                Include(c => c.MemberShipType).
+                ToList().
+                Select(Mapper.Map<Customer,CustomerDto>);
         }
 
         //Get api/custome/1

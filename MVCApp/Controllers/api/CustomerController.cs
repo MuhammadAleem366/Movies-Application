@@ -21,11 +21,11 @@ namespace MVCApp.Controllers.api
         //GEt api/Customers
         public IEnumerable<CustomerDto> GetCustomers()
         {
-
-            return _context.Customers.
+            var customersDto = _context.Customers.
                 Include(c => c.MemberShipType).
                 ToList().
-                Select(Mapper.Map<Customer,CustomerDto>);
+                Select(Mapper.Map<Customer, CustomerDto>);
+            return customersDto;
         }
 
         //Get api/custome/1

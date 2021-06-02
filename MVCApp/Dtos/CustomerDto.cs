@@ -16,6 +16,7 @@ namespace MVCApp.Dtos
         public string Email { get; set; }
         public string BirthDate { get; set; }
         public bool IsSubscribedToNewsLetter { get; set; }
+        public MemberShipTypeDto MemberShipType { get; set; }
         public byte MemberShipTypeId { get; set; }
     }
 }

@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using MVCApp.Models;
+using MVCApp.Dtos;
+using AutoMapper;
 namespace MVCApp.Controllers.api
 {
     public class MoviesController : ApiController
@@ -16,45 +18,43 @@ namespace MVCApp.Controllers.api
         }
 
         //Route GeT api/movies
-        public IEnumerable<Movie> GetMovies() {
-            var movies = _context.Movies.ToList();
-            return movies;
+        public IEnumerable<MovieDto> GetMovies() {
+            var moviesDto = _context.Movies.ToList().Select(Mapper.Map<Movie,MovieDto>);
+            return moviesDto;
         }
 
         //Route GET api/movies/id
-        public Movie GetMovie(int id)
+        public MovieDto GetMovie(int id)
         {
             var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
             if (movie == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            return movie;
+            return Mapper.Map<Movie,MovieDto>(movie);
         }
 
         //Route POST api/movies
         [HttpPost]
-        public Movie AddMovie(Movie movie)
+        public MovieDto AddMovie(MovieDto movieDto)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
+            var movie = Mapper.Map<MovieDto, Movie>(movieDto);
             _context.Movies.Add(movie);
             _context.SaveChanges();
-            return movie;
+            movieDto.Id = movie.Id;
+            return movieDto;
         }
 
         //Route Put api/movies/id
         [HttpPut]
-        public void UpdateMovie(int id, Movie movie) {
+        public void UpdateMovie(int id, MovieDto movieDto) {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             var movieIndDb = _context.Movies.SingleOrDefault(m => m.Id == id);
-            if (movie == null)
+            if (movieIndDb == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
-            movieIndDb.Name = movie.Name;
-            movieIndDb.GenreId = movie.GenreId;
-            movieIndDb.InStock = movie.InStock;
-            movieIndDb.ReleaseDate = movie.ReleaseDate;
-            movieIndDb.DateAdded = movie.DateAdded;
+            Mapper.Map(movieDto,movieIndDb);
             _context.SaveChanges();
 
         }

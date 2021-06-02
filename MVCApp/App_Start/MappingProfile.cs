@@ -11,8 +11,15 @@ namespace MVCApp.App_Start
     {
         public MappingProfile()
         {
+            //Domain to Dtos
             Mapper.CreateMap<Customer, CustomerDto>();
+            Mapper.CreateMap<Movie, MovieDto>();
+            Mapper.CreateMap<MemberShipType, MemberShipTypeDto>();
+            Mapper.CreateMap<Genre, GenresDto>();
+
+            //Dtos to Domain
             Mapper.CreateMap<CustomerDto, Customer>();
+            Mapper.CreateMap<MovieDto,Movie>();
         }
 
     }

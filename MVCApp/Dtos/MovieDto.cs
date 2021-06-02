@@ -13,7 +13,7 @@ namespace MVCApp.Dtos
         [StringLength(255)]
         public string Name { get; set; }
         
-        
+        public GenresDto Genre { get; set; }
         [Required]
         public byte GenreId { get; set; }
 

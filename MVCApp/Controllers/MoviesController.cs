@@ -25,8 +25,11 @@ namespace MVCApp.Controllers
         // GET: Movies
         public ActionResult Index()
         {
-            var movies = _context.Movies.Include(m => m.Genre).ToList();
-            return View(movies);
+            if (User.IsInRole(RoleName.CanManageMovies))
+            {
+                return View();
+            }
+            return View("ReadOnlyForUser");
         }
 
 
@@ -41,7 +44,8 @@ namespace MVCApp.Controllers
 
 
         //Get /Movies/MovieForm
-
+        //Authorize will be used to restrict that no one other than Admin can Use Edit Option
+        [Authorize(Roles=RoleName.CanManageMovies)]
         public ActionResult MovieForm(int? id)
         {
             var genres = _context.Genres.ToList();

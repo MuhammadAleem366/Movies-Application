@@ -20,6 +20,9 @@ namespace MVCApp.Controllers
         {
             _context.Dispose();    
         }
+        // GET: Customer/Index
+       
+        [Authorize]
         public ViewResult Index()
         {
             //if we run the aplication with following code there we get an error because MemberShipType

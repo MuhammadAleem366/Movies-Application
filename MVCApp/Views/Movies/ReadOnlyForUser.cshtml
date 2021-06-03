@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Movies";
+}
+
+<h2>@ViewBag.Title</h2>
+<table id="movie" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <td>Movie</td>
+            <td>Genre</td>
+        </tr>
+
+    </thead>
+    <tbody>
+    </tbody>
+
+
+</table>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            if (window.location.href.includes("Movies/Index")) {
+                urls = window.location.href.replace("Movies/Index", "api/movies");
+            } else {
+                urls = window.location.href.replace("Movies", "api/movies");
+            }
+           var table = $("#movie").DataTable({
+                ajax: {
+
+                    url: urls,
+                    dataSrc :""
+                },
+                columns: [
+                    {
+                        data:"Name",
+                        render: function (data, type, movie) {
+                            return "<a href='Movies/Details/" + movie.Id + "'>"+ data +"</a>";
+                        }
+
+                    }, {
+                        data:"Genre.Name"
+
+                    }
+                    
+
+
+                ]
+
+           });
+        });
+
+    </script>
+
+}

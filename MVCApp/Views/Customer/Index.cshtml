@@ -1,15 +1,10 @@
-﻿@model IEnumerable<MVCApp.Models.Customer>
-@{
+﻿@{
     ViewBag.Title = "Customers";
 }
 
 <h2>@ViewBag.Title</h2>
-@if (!Model.Any()) {
-    <p>There is no Customer found !!!</p>
-}
-else
-{
-<table class=" table table-bordered table-hover">
+
+<table id="customer" class=" table table-bordered table-hover">
     <thead>
         <tr>
             <td><h5>Customers</h5></td>
@@ -18,17 +13,74 @@ else
         </tr>
     </thead>
     <tbody>
-        @foreach (var customer in Model)
-        {
-            <tr>
-                <td>
-                    @Html.ActionLink(customer.Name,"Edit","Customer",new {id=customer.Id },null)
-                </td>
-                <td>@customer.MemberShipType.DiscountRate%</td>
-                <td>@customer.MemberShipType.Name</td>
-            </tr>
-        }
     </tbody>
 </table>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            if (window.location.href.includes("Customer/Index")) {
+                urls = window.location.href.replace("Customer/Index", "api/customer");
+            } else {
+               urls = window.location.href.replace("Customer", "api/customer");
+            }
+           var table = $("#customer").DataTable({
+                ajax: {
+                    
+                   url: urls,
+                   
+                   dataSrc: ""
+                },
+                columns: [
+                    {
+                        data:"Name",
+                        render: function (data, type, customer) {
+                            return "<a href='edit/" + customer.Id + "'>"+ data +"</a>";
+                        }
+
+                    }, {
+                        data:"MemberShipType.Name"
+
+                    }, {
+
+                        data: "Id",
+                        render: function (data) {
+                            return "<button data-customer-id='"+ data + "'class='btn-link'>Delete</button>";
+                        }
+                    }
+
+
+                ]
+
+            });
+
+            $("#customer").on("click", ".btn-link", function () {
+                button = $(this);
+                bootbox.confirm("Do You want to delete this ?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            //url: window.location.href.replace("Customer/Index", "api/customer") + button.attr("data-customer-id"),
+                            url: urls +  button.attr("data-customer-id"),
+                            method: "DELETE",
+                            error: function (xhr, status, error) {
+                                var err = JSON.parse(xhr.responseText);
+                                bootbox.alert(err.Message);
+                            },
+                            success: function () {
+                                //if we use button.parents('tr').remove() then it is removed from data base but saved in datatables objects
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+
+                });
+
+            });
+        });
+
+
+    </script>
+
+
 }
 

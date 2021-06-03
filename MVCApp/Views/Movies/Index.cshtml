@@ -4,10 +4,84 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<ul>
-    @foreach (var movie in Model)
-    {
-    <li><h2>@Html.ActionLink(movie.Name, "Details", "Movies",new { id = movie.Id},null)</h2></li>   
+<table id="movie" class="table table-bordered table-hover" >
+    <thead>
+        <tr>
+            <td>Movie</td>
+            <td>Genre</td>
+            <td>Delete</td>
+        </tr>
+
+    </thead>
+    <tbody>
+
+    </tbody>
+
+
+</table>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            if (window.location.href.includes("Movies/Index")) {
+                urls = window.location.href.replace("Movies/Index", "api/movies");
+            } else {
+                urls = window.location.href.replace("Movies", "api/movies");
+            }
+           var table = $("#movie").DataTable({
+                ajax: {
+
+                    url: urls,
+                    dataSrc :""
+                },
+                columns: [
+                    {
+                        data:"Name",
+                        render: function (data, type, movie) {
+                            return "<a href='Movies/Details/" + movie.Id + "'>"+ data +"</a>";
+                        }
+
+                    }, {
+                        data:"Genre.Name"
+
+                    }, {
+
+                        data: "Id",
+                        render: function (data) {
+                            return "<button data-movie-id="+ data + " class='btn-link'>Delete</button>";
+                        }
+                    }
+
+
+                ]
+
+            });
+
+            $("#movie").on("click", ".btn-link", function () {
+                button = $(this);
+                bootbox.confirm("Do You want to delete this??", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: urls + button.attr("data-movie-id"),
+                            method: "DELETE",
+                            error: function (xhr, status, error) {
+                                var err = JSON.parse(xhr.responseText);
+                                alert(err.Message);
+                            },
+                            success: function () {
+                                //if we use button.parents('tr').remove() then it is removed from data base but saved in datatables objects
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+
+                });
+
+            });
+        });
+
+
+    </script>
+
 
     }
-</ul>

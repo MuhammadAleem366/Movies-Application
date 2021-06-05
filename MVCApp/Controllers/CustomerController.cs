@@ -28,8 +28,8 @@ namespace MVCApp.Controllers
             //if we run the aplication with following code there we get an error because MemberShipType
             //doees not loads so we use Include() method
             //var customers = _context.Customers.ToList();
-            var customers = _context.Customers.Include(c => c.MemberShipType).ToList();
-            return View(customers);
+            //var customers = _context.Customers.Include(c => c.MemberShipType).ToList();
+            return View();
         }
         public ActionResult CustomerFormModel() {
             var memberShipTypes = _context.MemberShipTypes.ToList();
@@ -45,26 +45,30 @@ namespace MVCApp.Controllers
         public ActionResult Save(Customer customer)
         {
             //To access this we have to add Hidden Field in Our Form
-            if (customer.Id == 0)
-            {
-                _context.Customers.Add(customer);
-                _context.SaveChanges();
-                 }
-            else
-            {
-                var customerInDb = _context.Customers.Include(c => c.MemberShipType).Single(c => c.Id == customer.Id);
+          
+            
+                if (customer.Id == 0)
+                {
+                    _context.Customers.Add(customer);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    var customerInDb = _context.Customers.Include(c => c.MemberShipType).Single(c => c.Id == customer.Id);
 
-                //We can use TryUpdateModel(customerInDb) to update but this has some issues
+                    //We can use TryUpdateModel(customerInDb) to update but this has some issues
 
-                //Another method is to do it manually
-                customerInDb.Name = customer.Name;
-                customerInDb.Email = customer.Email;
-                customerInDb.BirthDate = customer.BirthDate;
-                customerInDb.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
-                customerInDb.MemberShipTypeId = customer.MemberShipTypeId;
-                _context.SaveChanges();
+                    //Another method is to do it manually
+                    customerInDb.Name = customer.Name;
+                    customerInDb.Email = customer.Email;
+                    customerInDb.BirthDate = customer.BirthDate;
+                    customerInDb.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
+                    customerInDb.MemberShipTypeId = customer.MemberShipTypeId;
+                    _context.SaveChanges();
 
+                
             }
+            
             return RedirectToAction("Index", "Customer");
 
         }

@@ -15,6 +15,7 @@
     <tbody>
     </tbody>
 </table>
+<a href="@Url.Action("CustomerFormModel","Customer")" class="btn btn-link btn-primary btn-lg">Be a Customer</a>
 
 @section scripts{
     <script>
@@ -22,30 +23,30 @@
             if (window.location.href.includes("Customer/Index")) {
                 urls = window.location.href.replace("Customer/Index", "api/customer");
             } else {
-               urls = window.location.href.replace("Customer", "api/customer");
+                urls = window.location.href.replace("Customer", "api/customer");
             }
-           var table = $("#customer").DataTable({
+            var table = $("#customer").DataTable({
                 ajax: {
-                    
-                   url: urls,
-                   
-                   dataSrc: ""
+
+                    url: urls,
+
+                    dataSrc: ""
                 },
                 columns: [
                     {
-                        data:"Name",
+                        data: "Name",
                         render: function (data, type, customer) {
-                            return "<a href='edit/" + customer.Id + "'>"+ data +"</a>";
+                            return "<a href='Details/" + customer.Id + "'>" + data + "</a>";
                         }
 
                     }, {
-                        data:"MemberShipType.Name"
+                        data: "MemberShipType.Name"
 
                     }, {
 
                         data: "Id",
                         render: function (data) {
-                            return "<button data-customer-id='"+ data + "'class='btn-link'>Delete</button>";
+                            return "<button data-customer-id='" + data + "'class='btn-link'>Delete</button>";
                         }
                     }
 
@@ -60,7 +61,7 @@
                     if (result) {
                         $.ajax({
                             //url: window.location.href.replace("Customer/Index", "api/customer") + button.attr("data-customer-id"),
-                            url: urls +  button.attr("data-customer-id"),
+                            url: urls + button.attr("data-customer-id"),
                             method: "DELETE",
                             error: function (xhr, status, error) {
                                 var err = JSON.parse(xhr.responseText);

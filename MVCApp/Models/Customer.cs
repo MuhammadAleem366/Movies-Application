@@ -13,8 +13,16 @@ namespace MVCApp.Models
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
+        
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
-        public string BirthDate { get; set; }
+        [DataType(DataType.DateTime)]
+        
+        [Required]
+        public DateTime BirthDate { get; set; }
+       
+        
         public bool IsSubscribedToNewsLetter { get; set; }
         public MemberShipType MemberShipType { get; set; }
         

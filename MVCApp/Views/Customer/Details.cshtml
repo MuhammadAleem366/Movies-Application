@@ -1,28 +1,33 @@
 ﻿@model MVCApp.Models.Customer
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Customer Detail";
 }
 
-<h2>Details</h2>
+<h2>@ViewBag.Title</h2>
 <table class=" table table-bordered table-hover">
     <thead>
         <tr>
-            <td><h5>Details</h5></td>
+            <td><h2>@Model.Name</h2></td>
         </tr>
     </thead>
     <tbody>
-            <tr>
-                <td>
-                    <h2>@Model.Name</h2><em>@Model.Email</em>
-                    @if (!Model.BirthDate.IsEmpty())
-                    {
-                        <em>@Model.BirthDate</em>
 
+        <tr>
+            <td>
+                <h6>Email: <em>@Model.Email</em></h6>
+                <h6>Member Ship Type: <em>@Model.MemberShipType</em></h6>
+                <h6>Birth Date: <em>@Model.BirthDate</em></h6>
+                <h6>Is Subscribed ?: <em>@Model.IsSubscribedToNewsLetter</em></h6>
+                
+            </td>
+        </tr>
 
-                    }
-                    
-                </td>
-            </tr>
-         
     </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                <button class="btn btn-lg btn-danger">@Html.ActionLink("Edit", "Edit", "Customer", new { id = Model.Id }, new { @style = "text-decoration:none;color:white;" })</button>
+            </td>
+        </tr>
+    </tfoot>
 </table>

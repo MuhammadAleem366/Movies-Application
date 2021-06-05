@@ -70,23 +70,26 @@ namespace MVCApp.Controllers
         [HttpPost]
        public ActionResult Save(Movie movie)
         {
-            if (movie.Id == 0) 
-            {
-                //if id is equal then movie will be added
-                _context.Movies.Add(movie);
-                _context.SaveChanges();
-            }
-            else
-            {
-                //if id not equal then it means its updated
-                var movieInDb = _context.Movies.Include(m => m.Genre).Single(m => m.Id == movie.Id);
-                movieInDb.Name = movie.Name;
-                movieInDb.ReleaseDate = movie.ReleaseDate;
-                movieInDb.DateAdded = movie.DateAdded;
-                movieInDb.InStock = movie.InStock;
-                movieInDb.GenreId = movie.GenreId;
-                _context.SaveChanges();
-            }
+            
+                if (movie.Id == 0)
+                {
+                    //if id is equal then movie will be added
+                    _context.Movies.Add(movie);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    //if id not equal then it means its updated
+                    var movieInDb = _context.Movies.Include(m => m.Genre).Single(m => m.Id == movie.Id);
+                    movieInDb.Name = movie.Name;
+                    movieInDb.ReleaseDate = movie.ReleaseDate;
+                    movieInDb.DateAdded = movie.DateAdded;
+                    movieInDb.InStock = movie.InStock;
+                    movieInDb.GenreId = movie.GenreId;
+                    _context.SaveChanges();
+                }
+            
+            
             return RedirectToAction("Index","Movies");
         }
     }

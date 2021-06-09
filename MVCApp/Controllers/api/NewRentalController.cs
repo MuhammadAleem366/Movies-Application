@@ -16,16 +16,16 @@ namespace MVCApp.Controllers.api
             _context = new ApplicationDbContext();
         }
         
-        
+        [Authorize]
         [HttpPost]
         public IHttpActionResult NewRental(NewRentalDto rentalDto)
         {
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == rentalDto.CutomerId);
-            
-            /*if (customer == null)
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == rentalDto.CustomerId);
+           
+            if (customer == null)
             {
                 return BadRequest("Invalid Customer Id");
-            }*/
+            }
 
             var movies = _context.Movies.Where(m => rentalDto.MovieIds.Contains(m.Id)).ToList();
             
@@ -37,13 +37,13 @@ namespace MVCApp.Controllers.api
                 }
                 movie.MoviesAvailable--;
                 
-                    var rental = new Rental
-                    {
-                        Customer = customer,
-                        Movie = movie,
-                        DateRented = DateTime.Now
-                    };
-                    _context.Rentals.Add(rental);
+               var rental = new Rental
+                   {
+                       Customer = customer,
+                       Movie = movie,
+                       DateRented = DateTime.Now
+                   };
+                  _context.Rentals.Add(rental);
 
                 _context.SaveChanges();
 

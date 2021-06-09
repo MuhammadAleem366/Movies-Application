@@ -7,7 +7,7 @@ namespace MVCApp.Dtos
 {
     public class NewRentalDto
     {
-        public int CutomerId { get; set; }
+        public int CustomerId { get; set; }
         public List<int> MovieIds { get; set; }
     }
 }

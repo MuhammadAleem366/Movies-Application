@@ -102,8 +102,8 @@
 
                         //Folowing code clears inputs
                         $("#customer").typeahead("val", "");
-                        $("#movie").typeahead("val", "");
-                        $("#movies").empty();
+                        $("#movies").typeahead("val", "");
+                        $("#movie").empty();
                        
                     }).fail(function () {
                         toastr.error("Something Bad Happend");

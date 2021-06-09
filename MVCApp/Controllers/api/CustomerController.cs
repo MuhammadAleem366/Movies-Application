@@ -19,10 +19,15 @@ namespace MVCApp.Controllers.api
         }
 
         //GEt api/Customers
-        public IEnumerable<CustomerDto> GetCustomers()
+        public IEnumerable<CustomerDto> GetCustomers(string query = null)
         {
-            var customersDto = _context.Customers.
-                Include(c => c.MemberShipType).
+            var customersQuery = _context.Customers.
+                Include(c => c.MemberShipType);
+            if (!String.IsNullOrWhiteSpace(query))
+            {
+                customersQuery = customersQuery.Where(c => c.Name.Contains(query));
+            }
+                var customersDto = customersQuery.
                 ToList().
                 Select(Mapper.Map<Customer, CustomerDto>);
             return customersDto;

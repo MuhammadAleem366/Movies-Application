@@ -21,5 +21,6 @@ namespace MVCApp.Models
         public DateTime ReleaseDate { get; set; }
         public DateTime DateAdded { get; set; }
         public byte InStock { get; set; }
+        public byte MoviesAvailable { get; set; }
     }
 }

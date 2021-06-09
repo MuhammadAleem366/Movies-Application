@@ -12,7 +12,12 @@ namespace MVCApp
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/bootbox.js",
-                        "~/Scripts/DataTables/jquery.dataTables.min.js"));
+                        "~/Scripts/DataTables/jquery.dataTables.min.js",
+                        "~/Scripts/typeahead.bundle.js",
+                        "~/Scripts/bloodhound.js",
+                        "~/Scripts/toastr.js"
+
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -28,6 +33,8 @@ namespace MVCApp
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/DataTables/css/dataTables.bootstrap.css",
+                      "~/Content/typeahead.css",
+                      "~/Content/toastr.css",
                       "~/Content/site.css"));
         }
     }

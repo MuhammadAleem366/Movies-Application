@@ -19,10 +19,15 @@ namespace MVCApp.Controllers.api
         }
 
         //Route GeT api/movies
-        public IEnumerable<MovieDto> GetMovies() {
-            var moviesDto = _context.Movies.
-                Include(m=>m.Genre).
-                ToList().
+        public IEnumerable<MovieDto> GetMovies(string query=null) {
+            var moviesQuery = _context.Movies.
+                Include(m => m.Genre).Where(m => m.MoviesAvailable > 0);
+            if (!String.IsNullOrWhiteSpace(query))
+            {
+                moviesQuery = moviesQuery.Where(m => m.Name.Contains(query));
+            }
+            var moviesDto = moviesQuery.
+            ToList().
                 Select(Mapper.Map<Movie,MovieDto>);
             return moviesDto;
         }
